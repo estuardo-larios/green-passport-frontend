@@ -1,14 +1,14 @@
 import Cookies from 'js-cookie';
 
 /**
- * CookieManager class for managing cookies.
+ * Clase CookieManager para gestionar cookies.
  */
 class CookieManager {
   /**
-   * Sets a cookie with a name, value, and optionally expiration days.
-   * @param name - The name of the cookie.
-   * @param value - The value to store in the cookie.
-   * @param days - Optional number of days for which the cookie will remain valid. If not provided, the cookie will be a session cookie.
+   * Establece una cookie con un nombre, valor y opcionalmente días de expiración.
+   * @param name - El nombre de la cookie.
+   * @param value - El valor que se almacenará en la cookie.
+   * @param days - Número opcional de días durante los cuales la cookie será válida. Si no se proporciona, la cookie será de sesión.
    */
   public setCookie(name: string, value: string, days?: number): void {
     const attributes = { expires: days };
@@ -16,25 +16,23 @@ class CookieManager {
   }
 
   /**
-   * Retrieves the value of a cookie by its name.
-   * @param name - The name of the cookie.
-   * @returns The value of the cookie or undefined if it does not exist.
+   * Obtiene el valor de una cookie por su nombre.
+   * @param name - El nombre de la cookie.
+   * @returns El valor de la cookie o undefined si no existe.
    */
   public getCookie(name: string): string | undefined {
-
-      return Cookies.get(name);
-
+    return Cookies.get(name);
   }
 
   /**
-   * Deletes a cookie by its name.
-   * @param name - The name of the cookie.
+   * Elimina una cookie por su nombre.
+   * @param name - El nombre de la cookie.
    */
   public deleteCookie(name: string): void {
     try {
       Cookies.remove(name);
     } catch (error) {
-      console.error(`Error deleting cookie "${name}":`, error);
+      console.error(`Error al eliminar la cookie "${name}":`, error);
     }
   }
 }

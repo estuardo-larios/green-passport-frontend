@@ -7,15 +7,19 @@ import {
 } from '@/interfaces/types.interface';
 import { FETCH_USERS_SUCCESS } from '@/interfaces/user.interface';
 
-// src/types/userTypes.ts (o agrégalo directamente al reducer)
-
+/**
+ * Representa un usuario.
+ */
 export interface User {
   id: string;
   name: string;
   email: string;
-  // agrega otros campos necesarios
+  // Agregar otros campos necesarios
 }
 
+/**
+ * Estado del módulo usuario.
+ */
 export interface UserState {
   user: User | null;
   users?: User[];
@@ -23,31 +27,49 @@ export interface UserState {
   loading?: boolean;
 }
 
+/**
+ * Acción exitosa de registro.
+ */
 interface RegisterSuccessAction {
   type: typeof REGISTER_SUCCESS;
   payload: User;
 }
 
+/**
+ * Acción exitosa de obtención de usuario.
+ */
 interface FetchUserSuccessAction {
   type: typeof FETCH_USER_SUCCESS;
   payload: User;
 }
 
+/**
+ * Acción exitosa de obtención de usuario por email.
+ */
 interface FetchUserByEmailSuccessAction {
   type: typeof FETCH_USER_BY_EMAIL_SUCCESS;
   payload: User;
 }
 
+/**
+ * Acción exitosa de obtención de múltiples usuarios.
+ */
 interface FetchUsersSuccessAction {
   type: typeof FETCH_USERS_SUCCESS;
   payload: User[];
 }
 
+/**
+ * Acción que representa error relacionado a usuario.
+ */
 interface UserFailureAction {
   type: typeof USER_FAILURE;
   payload: string;
 }
 
+/**
+ * Tipos de acción para el reducer usuario.
+ */
 export type UserActionTypes =
   | RegisterSuccessAction
   | FetchUserSuccessAction
@@ -55,12 +77,20 @@ export type UserActionTypes =
   | FetchUsersSuccessAction
   | UserFailureAction;
 
-
+/**
+ * Estado inicial del reducer usuario.
+ */
 const initialState: UserState = {
   user: null,
   error: null,
 };
 
+/**
+ * Reducer que maneja el estado del usuario.
+ * @param state Estado actual.
+ * @param action Acción disparada.
+ * @returns Nuevo estado.
+ */
 const userReducer = (
   state = initialState,
   action: UserActionTypes

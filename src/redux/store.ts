@@ -2,8 +2,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './root.reducer';
 
 /**
- * Configures and creates the Redux store.
- * @returns The configured store.
+ * Configura y crea la store de Redux.
+ * @returns La store configurada.
  */
 
 const store = configureStore({
