@@ -1,8 +1,44 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5f5f5;          /* Cambia aquí a tu valor real */
+  --foreground: #333333;
+  --transparent: transparent;
+  --current: currentColor;
+  --white: #ffffff;
+  --purple: #4f46e5;
+  --midnight: #121063;
+  --metal: #565584;
+  --tahiti: #3ab7bf;
+  --silver: #ecebff;
+  --bubble-gum: #ff77e9;
+  --bermuda: #78dcca;
+  --blue: #1d4ed8;
+  --grey: #475569;
+  --grey-gum: #cbd5e1;
+  --turquoise: #4FD1C5;
+  --grey-blue: #A0AEC0;
+  --ocean-blue: #031C30;
+  --black: #020617;
+  --red: #b91c1c;
+  --medium-blue-gray: #2B4052;
+  --light-periwinkle: #A5B4FC;
+  --blue-mist: #EFF4FA;
+  --light-blue: #EFF4FA;
+}
+
+.dark {
+  --background: #020617;
+  --foreground: #ffffff;
+}
+
+
+@media (prefers-color-scheme: ligh) {
+  :root {
+    --background: #ffffff;
+    --foreground: #ffffff;
+  }
 }
 
 @theme inline {
@@ -14,8 +50,30 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #ffffff;
     --foreground: #ededed;
+    --transparent: transparent;
+    --current: currentColor;
+    --white: #ffffff;
+    --purple: #4f46e5;
+    --midnight: #121063;
+    --metal: #565584;
+    --tahiti: #3ab7bf;
+    --silver: #ecebff;
+    --bubble-gum: #ff77e9;
+    --bermuda: #78dcca;
+    --blue: #1d4ed8;
+    --grey: #475569;
+    --grey-gum: #cbd5e1;
+    --turquoise: #4FD1C5;
+    --grey-blue: #A0AEC0;
+    --ocean-blue: #031C30;
+    --black: #020617;
+    --red: #b91c1c;
+    --medium-blue-gray: #2B4052;
+    --light-periwinkle: #A5B4FC;
+    --blue-mist: #EFF4FA;
+    --light-blue: #EFF4FA;
   }
 }
 
