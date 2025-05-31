@@ -1,24 +1,46 @@
 "use client";
+
 import validator from "validator";
 import { useState } from "react";
 import { registerUser } from "@/actions/user.action";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/hooks/hook";
 
+/**
+ * Componente funcional Register para el registro de usuarios.
+ * 
+ * Gestiona el estado del formulario de registro, incluyendo validación
+ * en el cliente para usuario, correo electrónico, contraseña y confirmación.
+ * Envía los datos para registrar un nuevo usuario y redirige al login en caso de éxito.
+ * 
+ * @returns JSX.Element - Formulario de registro con validaciones y manejo de errores.
+ */
 export default function Register() {
+  // Hook para despachar acciones de Redux
   const dispatch = useAppDispatch();
+  // Hook para navegación en Next.js
   const router = useRouter();
+
+  // Estados para los valores de los campos del formulario
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState(""); 
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  // Estados para errores específicos de cada campo
   const [error, setError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState(""); 
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [usernameError, setUsernameError] = useState("");
+
+  // Estado para mostrar indicador de carga mientras se procesa el registro
   const [loading, setLoading] = useState(false);
 
+  /**
+   * Valida el formato del correo electrónico al perder el foco.
+   * Actualiza el estado emailError en caso de formato inválido.
+   */
   const handleEmailBlur = () => {
     if (!validator.isEmail(email)) {
       setEmailError("Correo electrónico no válido");
@@ -27,6 +49,10 @@ export default function Register() {
     }
   };
 
+  /**
+   * Valida que la contraseña tenga al menos 8 caracteres al perder el foco.
+   * Actualiza el estado passwordError en caso de incumplimiento.
+   */
   const handlePasswordBlur = () => {
     if (password.length < 8) {
       setPasswordError("La contraseña debe tener al menos 8 caracteres");
@@ -35,6 +61,10 @@ export default function Register() {
     }
   };
 
+  /**
+   * Verifica que la confirmación de contraseña coincida con la contraseña.
+   * Actualiza el estado confirmPasswordError en caso de no coincidencia.
+   */
   const handleConfirmPasswordBlur = () => {
     if (confirmPassword !== password) {
       setConfirmPasswordError("Las contraseñas no coinciden");
@@ -43,6 +73,10 @@ export default function Register() {
     }
   };
 
+  /**
+   * Valida que el nombre de usuario no esté vacío.
+   * Actualiza el estado usernameError en caso de estar vacío.
+   */
   const handleUsernameBlur = () => {
     if (!username.trim()) {
       setUsernameError("El nombre de usuario es obligatorio");
@@ -51,15 +85,33 @@ export default function Register() {
     }
   };
 
+  /**
+   * Manejador del envío del formulario.
+   * Valida que los campos no tengan errores y que estén completos.
+   * Despacha la acción de registro y redirige al login si es exitoso.
+   * Maneja errores mostrando mensajes al usuario.
+   * 
+   * @param e - Evento de formulario
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !password || !confirmPassword || !username || emailError || passwordError || confirmPasswordError || usernameError) {
+    if (
+      !email ||
+      !password ||
+      !confirmPassword ||
+      !username ||
+      emailError ||
+      passwordError ||
+      confirmPasswordError ||
+      usernameError
+    ) {
       setError("Por favor, complete todos los campos correctamente.");
       return;
     }
 
     setLoading(true);
+
     try {
       const role: string = "user";
 
@@ -73,8 +125,16 @@ export default function Register() {
     }
   };
 
+  // Determina si el botón de registro debe estar deshabilitado
   const isButtonDisabled =
-    !username || !email || !password || !confirmPassword || Boolean(emailError) || Boolean(passwordError) || Boolean(confirmPasswordError) || Boolean(usernameError);
+    !username ||
+    !email ||
+    !password ||
+    !confirmPassword ||
+    Boolean(emailError) ||
+    Boolean(passwordError) ||
+    Boolean(confirmPasswordError) ||
+    Boolean(usernameError);
 
   if (loading) {
     return <div>Loading...</div>;

@@ -16,7 +16,6 @@ const initialLevels = [
   { id: 0, name: "Trophy", unlocked: true, isTrophy: true, url: "/" },
 ];
 
-
 const levelPositions = [
   { top: "83%", left: "70%" },
   { top: "36%", left: "62%" },
@@ -26,14 +25,30 @@ const levelPositions = [
   { top: "90%", left: "93%" },
 ];
 
+/**
+ * Componente que maneja la ruta de niveles del juego,
+ * controla desbloqueo de niveles según progreso del usuario,
+ * muestra animaciones de hojas y modales.
+ * @returns JSX.Element
+ */
 export default function LevelPath() {
+  /** Estado para nivel activo seleccionado */
   const [activeLevel, setActiveLevel] = useState<number | null>(null);
+  /** Estado para mostrar el trofeo animado */
   const [showTrophy, setShowTrophy] = useState(false);
+  /** Estado para niveles con su estado de desbloqueo */
   const [levels, setLevels] = useState(initialLevels);
+  /** Estado para mostrar modal final al completar todos los niveles */
+  const [showModal, setShowModal] = useState(false);
+  /** Estado para mostrar modal inicial del trofeo */
+  const [showInitialModal, setShowInitialModal] = useState(false);
+  /** Estado para animación de hojas */
+  const [leaves, setLeaves] = useState<
+    { id: number; emoji: string; left: string; size: string; duration: number }[]
+  >([]);
+
   const dispatch = useAppDispatch();
   const { items } = useAppSelector((state: RootState) => state.userItems);
-  const [showModal, setShowModal] = useState(false);
-  const [showInitialModal, setShowInitialModal] = useState(false);
 
   useEffect(() => {
     const cookieManeger = new CookieManager();
@@ -41,7 +56,6 @@ export default function LevelPath() {
     if (!userEmail) return;
     dispatch(fetchUserItemsByEmail(userEmail));
   }, [dispatch]);
-  
 
   useEffect(() => {
     if (!items?.length) return;
@@ -49,37 +63,28 @@ export default function LevelPath() {
     const completedIds = items
       .filter((item) => item.completed === true)
       .map((item) => item.itemId);
-  
+
     const maxCompletedId = completedIds.length > 0 ? Math.max(...completedIds) : 0;
-  
+
     const updatedLevels = initialLevels.map((level) => {
-      if (level.isTrophy) {
-        return level;
-      }
-      if (level.id === 1) {
-        return { ...level, unlocked: true };
-      }
+      if (level.isTrophy) return level;
+      if (level.id === 1) return { ...level, unlocked: true };
+
       const unlocked = completedIds.includes(level.id) || level.id === maxCompletedId + 1;
-  
+
       return { ...level, unlocked };
     });
-  
+
     setLevels(updatedLevels);
-  
+
     const allCompleted = items.length > 0 && items.every((item) => item.completed === true);
-    if (allCompleted) {
-      setShowModal(true);
-    }
+    if (allCompleted) setShowModal(true);
   }, [items]);
-  
-  
 
   useEffect(() => {
     const timer = setTimeout(() => setShowTrophy(true), 3000);
     return () => clearTimeout(timer);
   }, []);
-
-  const [leaves, setLeaves] = useState<{ id: number; emoji: string; left: string; size: string; duration: number }[]>([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -98,7 +103,14 @@ export default function LevelPath() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleLevelClick = (level: (typeof levels)[number]) => {
+  /**
+   * Maneja el clic en un nivel:
+   * navega si está desbloqueado,
+   * muestra modal si es trofeo,
+   * alerta si está bloqueado.
+   * @param level Nivel seleccionado
+   */
+  const handleLevelClick = (level: typeof levels[number]) => {
     if (level.unlocked && !level.isTrophy) {
       setActiveLevel(level.id);
       window.location.href = level.url;

@@ -18,18 +18,27 @@ export default function Login() {
     handleSubmit,
   } = userLogin();
 
+  // Hook de Next.js para navegación programática entre rutas.
   const router = useRouter();
 
+  // Variable booleana que determina si el botón de envío debe estar deshabilitado.
+  // Se deshabilita si email o contraseña están vacíos, o si existen errores de validación.
   const isButtonDisabled =
     !email || !password || Boolean(emailError) || Boolean(passwordError);
 
+  // Renderizado condicional para mostrar un indicador de carga mientras se procesa el login.
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  const handleRegisterRedirect = () => {
+  /**
+   * Función que redirige al usuario a la página de registro.
+   * Utiliza el router de Next.js para cambiar la ruta a "/register".
+   */
+  const handleRegisterRedirect = (): void => {
     router.push("/register");
   };
+
 
   return (
     <div className="flex items-center justify-center">
